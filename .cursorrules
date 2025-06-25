@@ -1,0 +1,24 @@
+{
+  "rules": [
+    "Always use conventional commits",
+    "Use semantic versioning",
+    "Follow Python PEP 8 style guidelines",
+    "Write comprehensive docstrings",
+    "Include type hints where appropriate",
+    "Test all new features and bug fixes"
+  ],
+  "git": {
+    "defaultBranch": "main",
+    "remoteOrigin": "https://github.com/todicn/PerfMonitorPY.git",
+    "branches": {
+      "main": "Production branch",
+      "dev-1": "Development branch for new features"
+    }
+  },
+  "python": {
+    "version": "3.6+",
+    "formatting": "black",
+    "linting": "flake8",
+    "testing": "pytest"
+  }
+} 
