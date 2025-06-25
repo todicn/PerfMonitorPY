@@ -1,0 +1,12 @@
+C:\Users\nikolat\src\ProductListing ver3\PerfMonitorCS.Core\bin\Debug\net9.0\PerfMonitorCS.Core.deps.json
+C:\Users\nikolat\src\ProductListing ver3\PerfMonitorCS.Core\bin\Debug\net9.0\PerfMonitorCS.Core.dll
+C:\Users\nikolat\src\ProductListing ver3\PerfMonitorCS.Core\bin\Debug\net9.0\PerfMonitorCS.Core.pdb
+C:\Users\nikolat\src\ProductListing ver3\PerfMonitorCS.Core\obj\Debug\net9.0\PerfMonitorCS.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nikolat\src\ProductListing ver3\PerfMonitorCS.Core\obj\Debug\net9.0\PerfMonitorCS.Core.AssemblyInfoInputs.cache
+C:\Users\nikolat\src\ProductListing ver3\PerfMonitorCS.Core\obj\Debug\net9.0\PerfMonitorCS.Core.AssemblyInfo.cs
+C:\Users\nikolat\src\ProductListing ver3\PerfMonitorCS.Core\obj\Debug\net9.0\PerfMonitorCS.Core.csproj.CoreCompileInputs.cache
+C:\Users\nikolat\src\ProductListing ver3\PerfMonitorCS.Core\obj\Debug\net9.0\PerfMonitorCS.Core.sourcelink.json
+C:\Users\nikolat\src\ProductListing ver3\PerfMonitorCS.Core\obj\Debug\net9.0\PerfMonitorCS.Core.dll
+C:\Users\nikolat\src\ProductListing ver3\PerfMonitorCS.Core\obj\Debug\net9.0\refint\PerfMonitorCS.Core.dll
+C:\Users\nikolat\src\ProductListing ver3\PerfMonitorCS.Core\obj\Debug\net9.0\PerfMonitorCS.Core.pdb
+C:\Users\nikolat\src\ProductListing ver3\PerfMonitorCS.Core\obj\Debug\net9.0\ref\PerfMonitorCS.Core.dll

@@ -2,23 +2,42 @@
   "rules": [
     "Always use conventional commits",
     "Use semantic versioning",
-    "Follow Python PEP 8 style guidelines",
-    "Write comprehensive docstrings",
-    "Include type hints where appropriate",
-    "Test all new features and bug fixes"
+    "Follow C# coding conventions and naming standards",
+    "Write comprehensive XML documentation",
+    "Include nullable reference types where appropriate",
+    "Test all new features and bug fixes using xUnit",
+    "Use async/await patterns for I/O operations",
+    "Follow SOLID principles and clean code practices"
   ],
   "git": {
     "defaultBranch": "main",
     "remoteOrigin": "https://github.com/todicn/PerfMonitorPY.git",
     "branches": {
       "main": "Production branch",
-      "dev-1": "Development branch for new features"
+      "dev-1": "Development branch for C# conversion"
     }
   },
-  "python": {
-    "version": "3.6+",
-    "formatting": "black",
-    "linting": "flake8",
-    "testing": "pytest"
+  "dotnet": {
+    "version": "6.0+",
+    "targetFramework": "net6.0",
+    "formatting": "dotnet format",
+    "linting": "dotnet analyze",
+    "testing": "xunit",
+    "nullable": "enable",
+    "langVersion": "latest"
+  },
+  "csharp": {
+    "conventions": {
+      "namingStyle": "PascalCase",
+      "privateFieldPrefix": "_",
+      "interfaces": "IPrefix",
+      "asyncSuffix": "Async"
+    },
+    "features": {
+      "nullableReferenceTypes": true,
+      "recordTypes": true,
+      "patternMatching": true,
+      "asyncStreams": true
+    }
   }
 } 

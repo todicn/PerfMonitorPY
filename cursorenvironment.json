@@ -1,28 +1,29 @@
 {
-    "name": "PerfMonitorPY Development Environment",
-    "description": "Python performance monitoring system development environment",
-    "python": {
-        "version": "3.6+",
-        "interpreter": "python",
-        "virtualenv": {
-            "enabled": true,
-            "path": "./venv"
-        },
+    "name": "PerfMonitorCS Development Environment",
+    "description": "C# performance monitoring system development environment",
+    "dotnet": {
+        "sdk": "6.0+",
+        "targetFramework": "net6.0",
+        "runtime": "dotnet",
         "packages": {
-            "development": [
-                "black",
-                "flake8",
-                "pytest",
-                "pytest-cov",
-                "mypy"
+            "core": [
+                "System.Text.Json"
             ],
-            "runtime": []
+            "testing": [
+                "xunit",
+                "xunit.runner.visualstudio",
+                "Microsoft.NET.Test.Sdk"
+            ],
+            "development": [
+                "Microsoft.CodeAnalysis.Analyzers",
+                "StyleCop.Analyzers"
+            ]
         }
     },
     "editor": {
         "formatOnSave": true,
         "formatOnType": false,
-        "rulers": [88],
+        "rulers": [120],
         "tabSize": 4,
         "insertSpaces": true,
         "detectIndentation": true
@@ -30,29 +31,29 @@
     "linting": {
         "enabled": true,
         "providers": {
-            "flake8": {
+            "dotnet": {
                 "enabled": true,
-                "args": ["--max-line-length=88", "--extend-ignore=E203,W503"]
+                "analyzers": ["Microsoft.CodeAnalysis.CSharp.CodeStyle", "StyleCop.Analyzers"]
             },
-            "mypy": {
-                "enabled": true,
-                "args": ["--ignore-missing-imports", "--strict-optional"]
+            "editorconfig": {
+                "enabled": true
             }
         }
     },
     "formatting": {
-        "provider": "black",
-        "black": {
-            "args": ["--line-length=88"]
+        "provider": "dotnet",
+        "dotnet": {
+            "style": "Microsoft",
+            "args": ["--verbosity", "diagnostic"]
         }
     },
     "testing": {
-        "framework": "pytest",
+        "framework": "xunit",
         "autoDiscover": true,
-        "defaultArgs": ["-v", "--tb=short"],
+        "defaultArgs": ["--logger", "console"],
         "coverage": {
             "enabled": true,
-            "reportFormats": ["html", "term"]
+            "reportFormats": ["html", "console"]
         }
     },
     "git": {
@@ -60,9 +61,9 @@
             "pre-commit": {
                 "enabled": true,
                 "commands": [
-                    "black --check .",
-                    "flake8 .",
-                    "pytest --tb=short"
+                    "dotnet format --verify-no-changes",
+                    "dotnet build --no-restore",
+                    "dotnet test --no-restore --no-build"
                 ]
             }
         },
@@ -71,16 +72,16 @@
     "workspace": {
         "folders": [
             {
-                "name": "PerfMonitorPY",
+                "name": "PerfMonitorCS",
                 "path": "."
             }
         ],
         "extensions": {
             "recommendations": [
-                "ms-python.python",
-                "ms-python.black-formatter",
-                "ms-python.flake8",
-                "ms-toolsai.jupyter"
+                "ms-dotnettools.csharp",
+                "ms-dotnettools.csdevkit",
+                "ms-dotnettools.vscode-dotnet-runtime",
+                "ms-vscode.vscode-json"
             ]
         }
     },
@@ -93,37 +94,46 @@
         }
     },
     "tasks": {
+        "build": {
+            "command": "dotnet",
+            "args": ["build"],
+            "group": "build"
+        },
         "test": {
-            "command": "pytest",
-            "args": ["-v", "--cov=performance_monitor"],
+            "command": "dotnet",
+            "args": ["test", "--logger", "console"],
             "group": "test"
         },
+        "run-examples": {
+            "command": "dotnet",
+            "args": ["run", "--project", "PerfMonitorCS.Examples"],
+            "group": "build"
+        },
         "format": {
-            "command": "black",
-            "args": ["."],
+            "command": "dotnet",
+            "args": ["format"],
             "group": "build"
         },
-        "lint": {
-            "command": "flake8",
-            "args": ["."],
+        "clean": {
+            "command": "dotnet",
+            "args": ["clean"],
             "group": "build"
         },
-        "install-dev": {
-            "command": "pip",
-            "args": ["install", "-r", "requirements.txt"],
+        "restore": {
+            "command": "dotnet",
+            "args": ["restore"],
             "group": "build"
         }
     },
     "debugConfiguration": {
-        "python": {
-            "type": "python",
+        "csharp": {
+            "type": "coreclr",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/PerfMonitorCS.Examples/bin/Debug/net6.0/PerfMonitorCS.Examples.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
-            "justMyCode": true,
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}"
-            }
+            "stopAtEntry": false
         }
     }
 } 

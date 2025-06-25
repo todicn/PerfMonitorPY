@@ -1,54 +1,79 @@
-# Performance Monitor
+# Performance Monitor CS
 
-A simple Python performance monitoring system that tracks execution times and call counts for specific methods using decorators.
+A comprehensive C# performance monitoring system that tracks execution times and call counts for methods using various monitoring approaches.
 
 ## Features
 
-- **Easy-to-use decorator**: Simply add `@monitor_performance` to any function
-- **Comprehensive statistics**: Track execution time, call count, min/max/average times, and standard deviation
-- **JSON export**: Export performance data to JSON format for analysis
-- **Reset functionality**: Clear metrics when needed
-- **Exception handling**: Metrics are tracked even if functions raise exceptions
-- **Class method support**: Works with instance methods, class methods, and static methods
+* **Easy-to-use static methods**: Simply wrap your code with `PerformanceMonitorStatic.MeasureExecution`
+* **Extension methods**: Use fluent syntax with `.WithPerformanceMonitoring()`
+* **Comprehensive statistics**: Track execution time, call count, min/max/average times, and standard deviation
+* **JSON export**: Export performance data to JSON format for analysis
+* **Reset functionality**: Clear metrics when needed
+* **Exception handling**: Metrics are tracked even if methods throw exceptions
+* **Thread-safe**: Concurrent access support using thread-safe collections
+* **Async support**: Full support for async/await patterns
 
 ## Quick Start
 
 ### Basic Usage
 
-```python
-from performance_monitor import monitor_performance
+```csharp
+using PerfMonitorCS.Core;
 
-@monitor_performance
-def my_function():
-    # Your code here
-    return "result"
+// Measure a function
+var result = PerformanceMonitorStatic.MeasureExecution(() =>
+{
+    // Your code here
+    return SomeExpensiveOperation();
+}, "MyOperation");
 
-# Call your function
-result = my_function()
+// Measure an async function
+var result = await PerformanceMonitorStatic.MeasureExecution(async () =>
+{
+    // Your async code here
+    return await SomeAsyncOperation();
+}, "MyAsyncOperation");
 
-# View performance summary
-from performance_monitor import perf_monitor
-perf_monitor.print_summary()
+// View performance summary
+PerformanceMonitorStatic.GlobalMonitor.PrintSummary();
 ```
 
 ### Advanced Usage
 
-```python
-from performance_monitor import PerformanceMonitor
+```csharp
+using PerfMonitorCS.Core;
 
-# Create a custom monitor instance
-monitor = PerformanceMonitor()
+// Create a custom monitor instance
+var monitor = new PerformanceMonitor();
 
-@monitor.monitor
-def custom_function():
-    return "custom result"
+// Measure with custom monitor
+var result = PerformanceMonitorStatic.MeasureExecution(() =>
+{
+    return CustomOperation();
+}, "CustomOperation", monitor);
 
-# Get specific statistics
-stats = monitor.get_stats("__main__.custom_function")
-print(f"Average execution time: {stats['average_time']:.6f}s")
+// Get specific statistics
+var stats = monitor.GetStats("CustomOperation");
+Console.WriteLine($"Average execution time: {stats["average_time"]:F6}s");
 
-# Export to JSON
-json_data = monitor.export_to_json("performance_data.json")
+// Export to JSON
+var json = await monitor.ExportToJsonAsync("performance_data.json");
+```
+
+### Extension Methods
+
+```csharp
+using PerfMonitorCS.Core;
+
+// Use extension methods for fluent syntax
+Func<int> myFunction = () => SomeComputation();
+var monitoredFunction = myFunction.WithPerformanceMonitoring("MyFunction");
+var result = monitoredFunction();
+
+// For actions
+Action myAction = () => DoSomething();
+var monitoredAction = myAction.WithPerformanceMonitoring("MyAction");
+monitoredAction();
 ```
 
 ## API Reference
@@ -57,55 +82,64 @@ json_data = monitor.export_to_json("performance_data.json")
 
 #### Methods
 
-- `monitor(func)`: Decorator to monitor a function's performance
-- `get_stats(func_name=None)`: Get performance statistics for a specific function or all functions
-- `reset()`: Clear all performance metrics
-- `export_to_json(filename=None)`: Export statistics to JSON format
-- `print_summary()`: Print a formatted summary of all performance data
+* `RecordExecution(methodName, executionTime)`: Manually record execution time
+* `GetStats(methodName = null)`: Get performance statistics for a specific method or all methods
+* `Reset()`: Clear all performance metrics
+* `ExportToJsonAsync(filename = null)`: Export statistics to JSON format
+* `ExportToJson(filename = null)`: Synchronous version of JSON export
+* `PrintSummary()`: Print a formatted summary of all performance data
 
 #### Statistics Provided
 
-- `call_count`: Number of times the function was called
-- `total_time`: Total execution time across all calls
-- `average_time`: Average execution time per call
-- `min_time`: Minimum execution time
-- `max_time`: Maximum execution time
-- `median_time`: Median execution time
-- `std_dev`: Standard deviation of execution times
+* `call_count`: Number of times the method was called
+* `total_time`: Total execution time across all calls
+* `average_time`: Average execution time per call
+* `min_time`: Minimum execution time
+* `max_time`: Maximum execution time
+* `median_time`: Median execution time
+* `std_dev`: Standard deviation of execution times
 
-### Global Convenience Functions
+### Static Helper Methods
 
-- `monitor_performance`: Decorator using the global monitor instance
-- `perf_monitor`: Global PerformanceMonitor instance
+* `PerformanceMonitorStatic.MeasureExecution<T>(Func<T>, methodName, monitor)`: Measure function execution
+* `PerformanceMonitorStatic.MeasureExecution(Action, methodName, monitor)`: Measure action execution
+* `PerformanceMonitorStatic.GlobalMonitor`: Access to global monitor instance
 
-## File Structure
+## Project Structure
 
 ```
-PerfMonitor/
-├── performance_monitor.py    # Main performance monitoring module
-├── example_usage.py         # Example usage demonstrations
-├── test_performance_monitor.py  # Comprehensive test suite
-├── requirements.txt         # Project dependencies
-└── README.md               # This file
+PerfMonitorCS/
+├── PerfMonitorCS.Core/          # Core performance monitoring library
+│   ├── PerformanceMonitor.cs    # Main performance monitoring class
+│   └── MonitorPerformanceAttribute.cs  # Attribute and static helpers
+├── PerfMonitorCS.Examples/      # Example usage demonstrations
+│   └── Program.cs               # Example applications
+├── PerfMonitorCS.Tests/         # Comprehensive test suite
+│   └── PerformanceMonitorTests.cs  # xUnit test cases
+├── PerfMonitorCS.sln           # Visual Studio solution file
+└── README.md                   # This file
 ```
 
 ## Running Examples
 
-### Basic Example
+### Console Application
+
 ```bash
-python example_usage.py
+dotnet run --project PerfMonitorCS.Examples
 ```
 
 This will demonstrate the performance monitor with various types of functions and print a comprehensive summary.
 
 ### Running Tests
+
 ```bash
-python test_performance_monitor.py
+dotnet test PerfMonitorCS.Tests
 ```
 
-Or using pytest (if installed):
+Or run with detailed output:
+
 ```bash
-pytest test_performance_monitor.py -v
+dotnet test PerfMonitorCS.Tests --logger "console;verbosity=detailed"
 ```
 
 ## Example Output
@@ -115,16 +149,16 @@ pytest test_performance_monitor.py -v
 PERFORMANCE MONITORING SUMMARY
 ================================================================================
 
-Function: __main__.quick_function
+Function: QuickFunction
   Call Count: 10
-  Total Time: 0.000123s
-  Average Time: 0.000012s
-  Min Time: 0.000010s
-  Max Time: 0.000015s
-  Median Time: 0.000012s
-  Std Deviation: 0.000002s
+  Total Time: 0.012340s
+  Average Time: 0.001234s
+  Min Time: 0.001000s
+  Max Time: 0.001500s
+  Median Time: 0.001200s
+  Std Deviation: 0.000200s
 
-Function: __main__.slow_function
+Function: SlowFunction
   Call Count: 3
   Total Time: 0.301234s
   Average Time: 0.100411s
@@ -136,25 +170,45 @@ Function: __main__.slow_function
 
 ## Use Cases
 
-- **Performance optimization**: Identify slow functions in your codebase
-- **Benchmarking**: Compare performance of different implementations
-- **Monitoring**: Track performance changes over time
-- **Debugging**: Find performance bottlenecks
-- **Testing**: Validate that performance requirements are met
+* **Performance optimization**: Identify slow methods in your codebase
+* **Benchmarking**: Compare performance of different implementations
+* **Monitoring**: Track performance changes over time in production
+* **Debugging**: Find performance bottlenecks
+* **Testing**: Validate that performance requirements are met
+* **Profiling**: Detailed analysis of method execution patterns
 
 ## Technical Details
 
-- Uses `time.perf_counter()` for high-precision timing
-- Thread-safe for basic usage
-- Minimal overhead - typically less than 1μs per function call
-- Preserves function metadata using `functools.wraps`
-- Handles exceptions gracefully - metrics are recorded even if functions fail
+* Uses `System.Diagnostics.Stopwatch` for high-precision timing
+* Thread-safe using `ConcurrentDictionary` and locking mechanisms
+* Minimal overhead - typically less than 1μs per method call
+* Preserves exception behavior - metrics recorded even when methods throw
+* Full async/await support with proper task handling
+* JSON serialization using `System.Text.Json`
 
 ## Requirements
 
-- Python 3.6+
-- No external dependencies (uses only Python standard library)
+* .NET 6.0 or later
+* No external dependencies beyond .NET base class library
+
+## NuGet Packages Used
+
+* `System.Text.Json` (built-in)
+* `xunit` (testing)
+* `xunit.runner.visualstudio` (testing)
 
 ## License
 
-This project is provided as-is for educational and development purposes. 
+This project is provided as-is for educational and development purposes.
+
+## Migration from Python
+
+This C# version provides equivalent functionality to the original Python PerfMonitorPY project:
+
+* **Python decorators** → **C# extension methods and static helpers**
+* **Python context managers** → **C# using statements and try/finally blocks**
+* **Python `time.perf_counter()`** → **C# `Stopwatch`**
+* **Python `statistics` module** → **C# LINQ and manual calculations**
+* **Python `json` module** → **C# `System.Text.Json`**
+
+The API has been adapted to follow C# conventions while maintaining the same core functionality and ease of use. 
