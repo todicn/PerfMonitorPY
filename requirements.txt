@@ -1,0 +1,11 @@
+# No external dependencies required - uses only Python standard library
+# The following are optional but recommended for development:
+
+# For running tests (optional - can use built-in unittest)
+# pytest>=7.0.0
+
+# For code formatting (optional)
+# black>=22.0.0
+
+# For type checking (optional)
+# mypy>=0.991 
